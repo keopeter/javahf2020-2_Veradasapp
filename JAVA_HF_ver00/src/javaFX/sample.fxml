@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaFX.Controller">
+    <children>
+        <Button layoutX="274.0" layoutY="200.0" mnemonicParsing="false" text="Beállítások" />
+        <Button layoutX="274.0" layoutY="174.0" mnemonicParsing="false" text="Vért Adtam!" />
+        <Button layoutX="274.0" layoutY="226.0" mnemonicParsing="false" text="Böngészés" />
+        <Label layoutX="257.0" layoutY="252.0" text="Jelenleg adhatsz vért!" />
+      <Button fx:id="exitBtn" cancelButton="true" layoutX="288.0" layoutY="270.0" mnemonicParsing="false" text="Kilépés" />
+
+
+    </children>
+</AnchorPane>
