@@ -1,6 +1,7 @@
 package javaFX;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -37,6 +38,8 @@ public class Main extends Application {
             properties.setProperty("City","messzi messzi galaxis");
             properties.setProperty("Weight","68");
             properties.setProperty("Gender","Férfi");
+            properties.setProperty("Type","AB+");
+
         }
 
         window=primaryStage;
@@ -57,6 +60,18 @@ public class Main extends Application {
         setbutton.setOnAction(e->window.setScene(setscene));
         Button wiewbutton = new Button("Böngészés");
         wiewbutton.setOnAction(e->window.setScene(wiewscene));
+        Label cani = new Label();
+
+        long days= conn2.getlastdaycount();
+        if(days>53.0){cani.setText("Adhatsz vért!");
+                        cani.setTextFill(Color.RED);
+        }
+        else{ cani.setText("Nem adhatsz vért, még " + (53-days) + " napig! ");
+            cani.setTextFill(Color.GREEN);
+
+        }
+
+
         Hyperlink link= new Hyperlink("https://www.veradas.hu/");
         link.fire();
         Label labeltud= new Label("Tudj meg többet a Véradásról!");
@@ -65,17 +80,17 @@ public class Main extends Application {
 
 
         VBox layout1 = new VBox(10);
-        layout1.getChildren().addAll(Text1,verad,wiewbutton,setbutton,labeltud,link,labelname);
+        layout1.getChildren().addAll(Text1,verad,wiewbutton,setbutton,cani,labeltud,link,labelname);
         layout1.setAlignment(Pos.CENTER);
         mainscene =new Scene(layout1,300,400);
 
         ////////////////////////BEÁLLÍTÁSOK
 
-        TextField txf1= new TextField();
+        TextField txf1= new TextField(properties.getProperty("Name"));
         txf1.setPromptText("Név");
-        TextField txf2= new TextField();
+        TextField txf2= new TextField(properties.getProperty("City"));
         txf2.setPromptText("Város");
-        TextField txf3= new TextField();
+        TextField txf3= new TextField(properties.getProperty("Weight"));
         txf3.setPromptText("Tömeg(kg)");
         Button backbtn = new Button("Vissza!");
         backbtn.setOnAction(e->window.setScene(mainscene));
@@ -88,7 +103,7 @@ public class Main extends Application {
         Label lgender=new Label("Neme");
 
         ChoiceBox chb1= new ChoiceBox();
-        chb1.setValue("0+");
+        chb1.setValue(properties.get("Type"));
 
         chb1.getItems().add("0+");
         chb1.getItems().add("0-");
@@ -100,7 +115,9 @@ public class Main extends Application {
         chb1.getItems().add("AB-");
 
         CheckBox cb1= new CheckBox("Nő");
+        cb1.setSelected(properties.getProperty("Gender").equals("Nő"));
         CheckBox cb2= new CheckBox("Férfi");
+        cb2.setSelected(properties.getProperty("Gender").equals("Férfi"));
 
         Button savbtn = new Button("Mentés");
         savbtn.setOnAction(e->{
@@ -121,6 +138,16 @@ public class Main extends Application {
                     IOException exx) {
                 exx.printStackTrace();
             }
+
+            System.out.println( "Restarting app!" );
+            primaryStage.close();
+            Platform.runLater( () -> {
+                try {
+                    new Main().start( new Stage() );
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
 
             window.setScene(mainscene);});
 
@@ -173,7 +200,15 @@ public class Main extends Application {
                 conn.getLog();
                 conn.setData(container.toQuery());
 
-
+                System.out.println( "Restarting app!" );
+                primaryStage.close();
+                Platform.runLater( () -> {
+                    try {
+                        new Main().start( new Stage() );
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
                 window.setScene(wiewscene);
 
             }

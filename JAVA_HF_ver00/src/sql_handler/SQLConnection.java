@@ -1,5 +1,6 @@
 package sql_handler;
 import java.sql.*;
+import java.time.temporal.ChronoUnit;
 
 public class SQLConnection {
     private Connection con;
@@ -43,6 +44,40 @@ public class SQLConnection {
         }
     }
 
+    public long getlastdaycount() {
+
+        try {
+           rs= st.executeQuery("select max(datum) from donation");
+            String daystr="0";
+            while (rs.next()) {
+                daystr = rs.getString("max(datum)");
+
+
+            }
+
+
+            Date today=new Date(System.currentTimeMillis());;
+            Date nottoday=Date.valueOf(daystr);
+
+
+            int daysdiff = 0;
+            long diff = today.getTime() - nottoday.getTime();
+            long diffDays = diff / (24 * 60 * 60 * 1000) + 1;
+            daysdiff = (int) diffDays;
+
+
+
+            return daysdiff;
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+            return 60;
+    }
+
     public String GetAllDonat(){
         String result="Eredmény";
         try {
@@ -57,7 +92,7 @@ public class SQLConnection {
                     act = count + ": " + rs.getString("datum") + " vérnyomás:" + rs.getString("sis") + "/" +
                             rs.getString("dis") + " hemo:" + rs.getString("hemo") + "\n------------------------------------";
                 }
-                else  act =   "X : " + rs.getString("datum") + "Sikertelen";
+                else  act =   "X : " + rs.getString("datum") + "Sikertelen"+ "\n------------------------------------";
 
                 result = result+"\n"+act;
 
