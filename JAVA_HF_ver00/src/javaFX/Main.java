@@ -1,20 +1,17 @@
 package javaFX;
 
-
 import javafx.application.Application;
-
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sql_handler.SQLConnection;
-
 import static java.lang.Integer.parseInt;
-
 import container.BloodContainer;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,7 +42,11 @@ public class Main extends Application {
         window=primaryStage;
 
         //////////////////////////////////INDULÓ
-        Text label1= new Text("Véradás Java App");
+        Text Text1= new Text("Véradás Java App");
+        Text1.setStyle("-fx-font: 30 arial;");
+        Text1.setFill(Color.RED);
+
+
 
         Button verad = new Button("Vért Adtam!");
         verad.setOnAction(e->window.setScene(veradasscene));
@@ -56,12 +57,12 @@ public class Main extends Application {
         Hyperlink link= new Hyperlink("https://www.veradas.hu/");
         Label labeltud= new Label("Tudj meg többet a Véradásról!");
 
-        Label labelname= new Label(properties.getProperty("Name"));
-        Label labelcity= new Label(properties.getProperty("City"));
-        Label labelweight= new Label(properties.getProperty("Weight"));
-        Label labelgender= new Label(properties.getProperty("Gender"));
+        Label labelname= new Label(properties.getProperty("Name") +" / "+properties.getProperty("City"));
+
+
         VBox layout1 = new VBox(10);
-        layout1.getChildren().addAll(label1,verad,wiewbutton,setbutton,labeltud,link,labelname,labelcity,labelweight,labelgender);
+        layout1.getChildren().addAll(Text1,verad,wiewbutton,setbutton,labeltud,link,labelname);
+        layout1.setAlignment(Pos.CENTER);
         mainscene =new Scene(layout1,600,400);
 
         ////////////////////////BEÁLLÍTÁSOK
@@ -75,7 +76,9 @@ public class Main extends Application {
         Button backbtn = new Button("Vissza!");
         backbtn.setOnAction(e->window.setScene(mainscene));
 
-        Text label2= new Text("Beállítások");
+        Text text2= new Text("Beállítások");
+        text2.setStyle("-fx-font: 30 arial;");
+        text2.setFill(Color.RED);
 
         Label lblood=new Label("Vércsoport");
         Label lgender=new Label("Neme");
@@ -108,8 +111,13 @@ public class Main extends Application {
             System.out.println("Properties átírva");
             window.setScene(mainscene);});
 
+        HBox helper= new HBox(20);
+        HBox helper2= new HBox(10);
         VBox layout2= new VBox(10);
-        layout2.getChildren().addAll(label2,txf1,txf2,txf3,lgender,cb1,cb2,lblood,chb1,savbtn,backbtn);
+        layout2.setAlignment(Pos.CENTER);
+        helper.getChildren().addAll(lgender,cb1,cb2,lblood,chb1);
+        helper2.getChildren().addAll(savbtn,backbtn);
+        layout2.getChildren().addAll(text2,txf1,txf2,txf3,helper,helper2);
         setscene =new Scene(layout2,600,400);
 
         try{
@@ -128,8 +136,10 @@ public class Main extends Application {
         Button buttonsave = new Button("Mentés");
 
 
-        Text label3= new Text("Véradás");
-        
+        Text text3= new Text("Véradás");
+        text3.setStyle("-fx-font: 30 arial;");
+        text3.setFill(Color.RED);
+
         TextField txdate= new TextField();
         txdate.setPromptText("Véradás Dátuma");
         TextField txf4= new TextField();
@@ -157,7 +167,8 @@ public class Main extends Application {
 
             window.setScene(mainscene);});
         VBox layout3= new VBox(10);
-        layout3.getChildren().addAll(label3,txdate,txf4,txf5,txf6,cbok,button2,buttonsave);
+        layout3.setAlignment(Pos.CENTER);
+        layout3.getChildren().addAll(text3,txdate,txf4,txf5,txf6,cbok,button2,buttonsave);
         veradasscene =new Scene(layout3,600,400);
 
         ////////////////////////Böngészés
@@ -172,8 +183,10 @@ public class Main extends Application {
 
         backbtn2.setOnAction(e->window.setScene(mainscene));
         Text lbwiew= new Text("Korábbi véradások");
-        VBox layout4= new VBox(10);
+        lbwiew.setFill(Color.RED);
 
+        VBox layout4= new VBox(10);
+        layout4.setAlignment(Pos.CENTER);
 
 
         layout4.getChildren().addAll(lbwiew,bigone,backbtn2);

@@ -44,7 +44,7 @@ public class SQLConnection {
     }
 
     public String GetAllDonat(){
-        String result=null;
+        String result="Eredmény";
         try {
             String query = "select * from donation";
             rs = st.executeQuery(query);
@@ -53,7 +53,7 @@ public class SQLConnection {
                 String act=null;
 
                 act= rs.getString("datum")+"\n" +rs.getString("sis")+"/"+
-                        rs.getString("dis")+"hemo:"+rs.getString("hemo");
+                        rs.getString("dis")+"hemo:"+rs.getString("hemo")+"\n--------------";
 
                 result = result+"\n"+act;
 
