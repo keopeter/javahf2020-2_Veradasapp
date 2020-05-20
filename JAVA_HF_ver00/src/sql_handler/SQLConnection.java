@@ -49,11 +49,15 @@ public class SQLConnection {
             String query = "select * from donation";
             rs = st.executeQuery(query);
             System.out.println("Data I call..");
+            int count=0;
             while (rs.next()) {
                 String act=null;
-
-                act= rs.getString("datum")+" vérnyomás:" +rs.getString("sis")+"/"+
-                        rs.getString("dis")+" hemo:"+rs.getString("hemo")+"\n------------------------------------";
+                if(rs.getInt("ok") == 1) {
+                    count++;
+                    act = count + ": " + rs.getString("datum") + " vérnyomás:" + rs.getString("sis") + "/" +
+                            rs.getString("dis") + " hemo:" + rs.getString("hemo") + "\n------------------------------------";
+                }
+                else  act =   "X : " + rs.getString("datum") + "Sikertelen";
 
                 result = result+"\n"+act;
 

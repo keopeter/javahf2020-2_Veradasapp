@@ -58,6 +58,7 @@ public class Main extends Application {
         Button wiewbutton = new Button("Böngészés");
         wiewbutton.setOnAction(e->window.setScene(wiewscene));
         Hyperlink link= new Hyperlink("https://www.veradas.hu/");
+        link.fire();
         Label labeltud= new Label("Tudj meg többet a Véradásról!");
 
         Label labelname= new Label(properties.getProperty("Name") +" / "+properties.getProperty("City"));
@@ -107,11 +108,20 @@ public class Main extends Application {
             properties.setProperty("Name",txf1.getText());
             properties.setProperty("City",txf2.getText());
             properties.setProperty("Weight",txf3.getText());
+            properties.setProperty("Type",chb1.getValue().toString());
 
             if (cb1.isSelected())properties.setProperty("Gender","Nő");
             else properties.setProperty("Gender","Férfi");
 
-            System.out.println("Properties átírva");
+            try{
+                properties.store(new FileOutputStream("my_prop.properties"), "mycomment");
+                System.out.println("Properties átírva");
+            }
+            catch (
+                    IOException exx) {
+                exx.printStackTrace();
+            }
+
             window.setScene(mainscene);});
 
         HBox helper= new HBox(10);
