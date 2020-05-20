@@ -12,10 +12,15 @@ import container.PersonContainer;
 import static container.Gender.MALE;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static java.lang.Integer.parseInt;
 
 import container.BloodContainer;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Date;
+import java.util.Properties;
 
 public class Main extends Application {
     Stage window;
@@ -23,6 +28,21 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream("my_prop.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(properties.getProperty("Name")==null){
+            properties.setProperty("Name","ismeretlen hős");
+            properties.setProperty("City","messzi messzi galaxis");
+            properties.setProperty("Weight","68");
+            properties.setProperty("Gender","Férfi");
+        }
+
         window=primaryStage;
 
         //////////////////////////////////INDULÓ
@@ -37,8 +57,12 @@ public class Main extends Application {
         Hyperlink link= new Hyperlink("https://www.veradas.hu/");
         Label labeltud= new Label("Tudj meg többet a Véradásról!");
 
+        Label labelname= new Label(properties.getProperty("Name"));
+        Label labelcity= new Label(properties.getProperty("City"));
+        Label labelweight= new Label(properties.getProperty("Weight"));
+        Label labelgender= new Label(properties.getProperty("Gender"));
         VBox layout1 = new VBox(10);
-        layout1.getChildren().addAll(label1,verad,wiewbutton,setbutton,labeltud,link);
+        layout1.getChildren().addAll(label1,verad,wiewbutton,setbutton,labeltud,link,labelname,labelcity,labelweight,labelgender);
         mainscene =new Scene(layout1,600,400);
 
         ////////////////////////BEÁLLÍTÁSOK
@@ -51,10 +75,7 @@ public class Main extends Application {
         txf3.setPromptText("Tömeg(kg)");
         Button backbtn = new Button("Vissza!");
         backbtn.setOnAction(e->window.setScene(mainscene));
-        Button savbtn = new Button("Mentés");
-        savbtn.setOnAction(e->{
-            System.out.println("Properties-t írni kellene");
-            window.setScene(mainscene);});
+
         Text label2= new Text("Beállítások");
 
         Label lblood=new Label("Vércsoport");
@@ -74,18 +95,39 @@ public class Main extends Application {
 
         CheckBox cb1= new CheckBox("Nő");
         CheckBox cb2= new CheckBox("Férfi");
+
+        Button savbtn = new Button("Mentés");
+        savbtn.setOnAction(e->{
+
+            properties.setProperty("Name",txf1.getText());
+            properties.setProperty("City",txf2.getText());
+            properties.setProperty("Weight",txf3.getText());
+
+            if (cb1.isSelected())properties.setProperty("Gender","Nő");
+            else properties.setProperty("Gender","Férfi");
+
+            System.out.println("Properties átírva");
+            window.setScene(mainscene);});
+
         VBox layout2= new VBox(10);
         layout2.getChildren().addAll(label2,txf1,txf2,txf3,lgender,cb1,cb2,lblood,chb1,savbtn,backbtn);
         setscene =new Scene(layout2,600,400);
+
+        try{
+            properties.store(new FileOutputStream("my_prop.properties"), "mycomment");
+        }
+        catch (
+                IOException e) {
+            e.printStackTrace();
+        }
+
+
         //////////////////////////VÉRADÁS
 
         Button button2 = new Button("Vissza!");
         button2.setOnAction(e->window.setScene(mainscene));
         Button buttonsave = new Button("Mentés");
-        buttonsave.setOnAction(e->{
 
-            System.out.println("Menteni kellene");
-            window.setScene(mainscene);});
 
         Text label3= new Text("Véradás");
         Label dias=new Label("Sistole");
@@ -101,10 +143,25 @@ public class Main extends Application {
         TextField txf6= new TextField();
         txf6.setPromptText("Hemoglobin");
 
-        CheckBox cbok= new CheckBox("Sikeres Véradás");
+        CheckBox cbok= new CheckBox("Minden rendben ment. ");
 
+        buttonsave.setOnAction(e->{
+            if(txdate.getText()!=null){
+
+                BloodContainer container=new BloodContainer(Date.valueOf(txdate.getText()),parseInt(txf6.getText()),
+                                                                parseInt(txf4.getText()),parseInt(txf5.getText()),cbok.isSelected());
+                SQLConnection conn = new SQLConnection();
+                conn.getLog();
+                conn.setData(container.toQuery());
+
+                window.setScene(mainscene);
+
+            }
+
+
+            window.setScene(mainscene);});
         VBox layout3= new VBox(10);
-        layout3.getChildren().addAll(label3,txdate,txf4,txf5,txf6,button2,buttonsave);
+        layout3.getChildren().addAll(label3,txdate,txf4,txf5,txf6,cbok,button2,buttonsave);
         veradasscene =new Scene(layout3,600,400);
 
         ////////////////////////Böngészés
@@ -151,6 +208,9 @@ public class Main extends Application {
 
         System.out.println(elso.toString());
         System.out.println(masodik.toString());
+
+
+
 
     }
 
