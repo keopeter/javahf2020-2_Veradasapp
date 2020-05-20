@@ -52,8 +52,8 @@ public class SQLConnection {
             while (rs.next()) {
                 String act=null;
 
-                act= rs.getString("datum")+"\n" +rs.getString("sis")+"/"+
-                        rs.getString("dis")+"hemo:"+rs.getString("hemo")+"\n--------------";
+                act= rs.getString("datum")+" vérnyomás:" +rs.getString("sis")+"/"+
+                        rs.getString("dis")+" hemo:"+rs.getString("hemo")+"\n------------------------------------";
 
                 result = result+"\n"+act;
 

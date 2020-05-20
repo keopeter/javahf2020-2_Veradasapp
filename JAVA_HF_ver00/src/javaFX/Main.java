@@ -47,6 +47,9 @@ public class Main extends Application {
         Text1.setFill(Color.RED);
 
 
+        SQLConnection conn2 = new SQLConnection();
+        conn2.getLog();
+        String records=conn2.GetAllDonat();
 
         Button verad = new Button("Vért Adtam!");
         verad.setOnAction(e->window.setScene(veradasscene));
@@ -63,7 +66,7 @@ public class Main extends Application {
         VBox layout1 = new VBox(10);
         layout1.getChildren().addAll(Text1,verad,wiewbutton,setbutton,labeltud,link,labelname);
         layout1.setAlignment(Pos.CENTER);
-        mainscene =new Scene(layout1,600,400);
+        mainscene =new Scene(layout1,300,400);
 
         ////////////////////////BEÁLLÍTÁSOK
 
@@ -111,14 +114,14 @@ public class Main extends Application {
             System.out.println("Properties átírva");
             window.setScene(mainscene);});
 
-        HBox helper= new HBox(20);
+        HBox helper= new HBox(10);
         HBox helper2= new HBox(10);
         VBox layout2= new VBox(10);
         layout2.setAlignment(Pos.CENTER);
         helper.getChildren().addAll(lgender,cb1,cb2,lblood,chb1);
         helper2.getChildren().addAll(savbtn,backbtn);
         layout2.getChildren().addAll(text2,txf1,txf2,txf3,helper,helper2);
-        setscene =new Scene(layout2,600,400);
+        setscene =new Scene(layout2,300,400);
 
         try{
             properties.store(new FileOutputStream("my_prop.properties"), "mycomment");
@@ -160,7 +163,8 @@ public class Main extends Application {
                 conn.getLog();
                 conn.setData(container.toQuery());
 
-                window.setScene(mainscene);
+
+                window.setScene(wiewscene);
 
             }
 
@@ -169,28 +173,43 @@ public class Main extends Application {
         VBox layout3= new VBox(10);
         layout3.setAlignment(Pos.CENTER);
         layout3.getChildren().addAll(text3,txdate,txf4,txf5,txf6,cbok,button2,buttonsave);
-        veradasscene =new Scene(layout3,600,400);
+        veradasscene =new Scene(layout3,300,400);
 
         ////////////////////////Böngészés
-        SQLConnection conn2 = new SQLConnection();
-        conn2.getLog();
 
 
-
-        Label bigone=new Label(conn2.GetAllDonat());
+        records=conn2.GetAllDonat();
+        ScrollPane scrollPane = new ScrollPane();
+        Label bigone=new Label(records);
 
         Button backbtn2 = new Button("Vissza!");
 
         backbtn2.setOnAction(e->window.setScene(mainscene));
-        Text lbwiew= new Text("Korábbi véradások");
-        lbwiew.setFill(Color.RED);
+        Text text4= new Text("Korábbi véradások");
+        text4.setStyle("-fx-font: 30 arial;");
+        text4.setFill(Color.RED);
+
 
         VBox layout4= new VBox(10);
+        VBox layout4helper= new VBox(10);
+        layout4helper.setAlignment(Pos.CENTER);
+
+
+        layout4helper.getChildren().addAll(bigone);
+
+        scrollPane.setContent(layout4helper);
+
+
+        scrollPane.pannableProperty().set(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+        layout4.getChildren().addAll(text4,scrollPane,backbtn2);
         layout4.setAlignment(Pos.CENTER);
+        wiewscene = new Scene(layout4, 300, 400);
 
 
-        layout4.getChildren().addAll(lbwiew,bigone,backbtn2);
-        wiewscene=new Scene(layout4,600,400);
+
 
         //////////////////////////
         window.setScene(mainscene);
