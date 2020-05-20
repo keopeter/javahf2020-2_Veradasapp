@@ -43,6 +43,30 @@ public class SQLConnection {
         }
     }
 
+    public String GetAllDonat(){
+        String result=null;
+        try {
+            String query = "select * from donation";
+            rs = st.executeQuery(query);
+            System.out.println("Data I call..");
+            while (rs.next()) {
+                String act=null;
+
+                act= rs.getString("datum")+"\n" +rs.getString("sis")+"/"+
+                        rs.getString("dis")+"hemo:"+rs.getString("hemo");
+
+                result = result+"\n"+act;
+
+
+            }
+        } catch(Exception ex) {
+            System.out.println(ex);
+        }
+
+
+        return result;
+    }
+
 }
 
 

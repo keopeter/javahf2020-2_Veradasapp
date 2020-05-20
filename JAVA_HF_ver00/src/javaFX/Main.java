@@ -1,17 +1,16 @@
 package javaFX;
 
-import container.Bloodtype;
+
 import javafx.application.Application;
+
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sql_handler.SQLConnection;
-import container.PersonContainer;
-import static container.Gender.MALE;
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
+
 import static java.lang.Integer.parseInt;
 
 import container.BloodContainer;
@@ -130,10 +129,7 @@ public class Main extends Application {
 
 
         Text label3= new Text("Véradás");
-        Label dias=new Label("Sistole");
-        Label sis=new Label("Diastole");
-        Label hemo=new Label("Hemoglobin");
-
+        
         TextField txdate= new TextField();
         txdate.setPromptText("Véradás Dátuma");
         TextField txf4= new TextField();
@@ -165,60 +161,39 @@ public class Main extends Application {
         veradasscene =new Scene(layout3,600,400);
 
         ////////////////////////Böngészés
+        SQLConnection conn2 = new SQLConnection();
+        conn2.getLog();
+
+
+
+        Label bigone=new Label(conn2.GetAllDonat());
+
         Button backbtn2 = new Button("Vissza!");
 
         backbtn2.setOnAction(e->window.setScene(mainscene));
         Text lbwiew= new Text("Korábbi véradások");
         VBox layout4= new VBox(10);
-        layout4.getChildren().addAll(lbwiew,backbtn2);
+
+
+
+        layout4.getChildren().addAll(lbwiew,bigone,backbtn2);
         wiewscene=new Scene(layout4,600,400);
 
         //////////////////////////
         window.setScene(mainscene);
         window.setTitle("Véradás Java App");
         window.show();
-        /*Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Véradás JAVA-App");
-        primaryStage.setScene(new Scene(root, 600, 400));
-        primaryStage.show();*/
+
     }
 
 
     public static void main(String[] args) {
 
-
-
         launch(args);
-
-
-
 
         System.out.println("I am alive, you can't bring me down!");
 
-        SQLConnection connect = new SQLConnection();
-        connect.getLog();
-        connect.setData("insert into donation(datum, dis,sis,hemo,ok) values(\"2012-12-02\",80,120,134,true);"); //OK
-
-        PersonContainer joco = new PersonContainer("Józsi",85.4,"Budapest",MALE, Bloodtype.AN);
-        BloodContainer elso =new BloodContainer(Date.valueOf("1930-10-21"),150,120,80,TRUE);
-        BloodContainer masodik =new BloodContainer(Date.valueOf("1930-10-21"),150,120,80,FALSE);
-
-        connect.setData(elso.toQuery());
-        connect.setData(masodik.toQuery());
-
-        System.out.println(elso.toString());
-        System.out.println(masodik.toString());
-
-
-
-
     }
-
-
-
-
-
-
 }
 
 
